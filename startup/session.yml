@@ -1,0 +1,36 @@
+name: aerial_robotics_session
+root: ./
+startup_window: crazyflies_start
+pre_window: |
+  source <%= @settings["setup_name"] %>
+windows:
+  - crazyflies_start:
+      layout: tiled
+      panes:
+        - bash ~/CrazySim/crazyflie-firmware/tools/crazyflie-simulation/simulator_files/gazebo/launch/sitl_multiagent_square.sh -n 1 -m crazyflie
+        - waitForCfsGazebo;sleep 1;ros2 launch crazyflie launch.py backend:=cflib rviz:=True mocap:=False teleop:=False gui:=False
+
+  - util:
+      layout: tiled
+      panes:
+        - |
+          waitForCfsGazebo ;sleep 5;
+          ros2 topic pub -1 /cf_1/cmd_vel_legacy geometry_msgs/msg/Twist "{linear: {x: 0.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.0}}";
+          ros2 run aerial_robotics_tasks mux_node
+        - waitForCfsGazebo;sleep 1;rqt
+        - waitForCfsGazebo;sleep 3;ros2 topic echo /cf_1/pose
+
+  - height_control:
+      layout: tiled
+      panes:
+        - waitForCfsGazebo;sleep 1;ros2 run aerial_robotics_tasks height_ctl_node
+
+  - yaw_control:
+      layout: tiled
+      panes:
+        - waitForCfsGazebo;sleep 1;ros2 run aerial_robotics_tasks yaw_ctl_node
+
+  - horizontal_control:
+      layout: tiled
+      panes:
+        - waitForCfsGazebo;sleep 1;ros2 run aerial_robotics_tasks horizontal_ctl_node
