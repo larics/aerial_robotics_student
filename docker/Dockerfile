@@ -248,5 +248,5 @@ RUN sudo apt install ros-${ROS2_DISTRO}-tf-transformations
 RUN sudo pip install pyqtgraph plotly
 
 USER root
-WORKDIR $HOME/ros2_ws/src/aerial_robotics/startup
+WORKDIR $HOME/ros2_ws/src/aerial_robotics_student/startup
 CMD ["/bin/bash"]
