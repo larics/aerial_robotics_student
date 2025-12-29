@@ -13,6 +13,8 @@ from std_msgs.msg import Float32
 import numpy as np
 from aerial_robotics_msgs.msg import PIDController
 from crazyflie_interfaces.msg import LogDataGeneric
+from tf_transformations import euler_from_quaternion
+import math # For sin and cos
 
 class HorizontalControl(Node):
     '''
@@ -38,6 +40,8 @@ class HorizontalControl(Node):
         Initialization of the class.
         '''
         super().__init__('crazyflie_horizontal_controller')
+
+        self.yaw_mv = 0.0
 
         self.start_flag = False         # indicates if we received the first measurement
 
@@ -155,6 +159,7 @@ class HorizontalControl(Node):
         # If you want to test only vx/vy - controller, the corresponding reference is stored in self.vx_sp/self.vy_sp.
         # Measured vx-velocity is stored in self.vx_mv
         # Measured vy-velocity is stored in self.vy_mv
+        # Current yaw is stored in self.yaw_mv. Use it so controller can work under any yaw.
         # Store your setpoints to pitch_command and roll_command
 
 
@@ -184,6 +189,13 @@ class HorizontalControl(Node):
         
         self.x_mv = msg.pose.position.x
         self.y_mv = msg.pose.position.y
+
+        q = [msg.pose.orientation.x,
+            msg.pose.orientation.y,
+            msg.pose.orientation.z,
+            msg.pose.orientation.w]
+        (roll, pitch, yaw) = euler_from_quaternion(q)
+        self.yaw_mv = yaw
         
     def vel_cb(self, msg):
         
