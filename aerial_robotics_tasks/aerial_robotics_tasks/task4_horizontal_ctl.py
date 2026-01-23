@@ -171,6 +171,7 @@ class HorizontalControl(Node):
         # However, due to crazyflies specifics, these values are switched and x command is inverted.
         # Within lab, you can consider that x = roll_command; y = pitch_command, and these lines map it
         # correctly for crazyflies.
+        setpoint = Twist()
         setpoint.linear.x = - float(pitch_command)
         setpoint.linear.y = float(roll_command)
         setpoint.linear.z = 0.0
@@ -270,3 +271,4 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
+
