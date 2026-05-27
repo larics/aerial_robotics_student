@@ -164,9 +164,9 @@ RUN apt install -y ros-${ROS2_DISTRO}-tf-transformations \
 
 #installing CrazySim
 WORKDIR $HOME
-RUN  git clone https://github.com/gtfactslab/CrazySim.git --recursive \
-    && cd $HOME/CrazySim/crazyflie-lib-python \
-    &&  pip install -e .
+RUN git clone https://github.com/gtfactslab/CrazySim.git --recursive \
+    && cd $HOME/CrazySim/crazyflie-firmware \
+    && pip install cflib
 
 RUN pip install Jinja2
 RUN cd $HOME/CrazySim/crazyflie-firmware \
