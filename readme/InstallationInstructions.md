@@ -30,7 +30,7 @@ We recommend creating folder `git` in your home folder for storing various git r
 
 1. Clone the repository with
 ```bash
-git clone https://github.com/larics/aerial_robotics.git
+git clone https://github.com/larics/aerial_robotics_student.git
 ```
 
 2. Build the docker
